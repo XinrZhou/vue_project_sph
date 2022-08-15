@@ -1,19 +1,19 @@
 <template>
     <div>
-        <!-- 三级联动全局组件，已经注册为全局组件，不需要再引入 -->
-        <!-- <TypeNav/>
+        <!-- 三级联动全局组件，已经注册为全局组件，不需要再引入 --> 
+        <TypeNav/>
         <ListContainer/>
         <TodayRecommend/>
         <Rank/>
         <Like/>
         <Floor/>
         <Floor/>
-        <Brand/> -->
-        <button>点我+1</button>
+        <Brand/>
+        <!-- <button>点我+1</button>
         <hr>
         <span>仓库的数据：</span>
         <hr>
-        <button>点我-1</button>
+        <button>点我-1</button> -->
     </div>
 </template>
 
