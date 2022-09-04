@@ -5,18 +5,9 @@
                 <!--banner轮播-->
                 <div class="swiper-container" id="mySwiper">
                     <div class="swiper-wrapper">
-                        <div class="swiper-slide">
-                            <img src="./images/banner1.jpg" />
+                        <div class="swiper-slide" v-for="(carousel,index) in bannerList" :key="carousel.id">
+                            <img :src="carousel.imgUrl" />
                         </div>
-                        <!-- <div class="swiper-slide">
-                            <img src="./images/banner2.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img src="./images/banner3.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img src="./images/banner4.jpg" />
-                        </div> -->
                     </div>
                     <!-- 如果需要分页器 -->
                     <div class="swiper-pagination"></div>
@@ -111,6 +102,9 @@
 
 <script>
     import { mapState } from 'vuex';
+    //引包
+    import Swiper from 'swiper';
+
     export default {
         name:'ListRecommend',
         mounted() {
@@ -121,6 +115,32 @@
             ...mapState({
                 bannerList:state => state.home.bannerList
             })
+        },
+        watch:{
+            //监听bannerList数据变化：由空数组变成四个元素
+            bannerList:{
+                //不能保证执行handler之前数据遍历完成,只能保证已经有数据了
+                handler(newValue,oldValue){
+                    //nextTick:在下次DOM更新 循环结束之后 执行延迟回调。在 修改数据之后 立即使用该方法，获取更新后的DOM
+                    this.$nextTick(()=>{
+                        var mySwiper = new Swiper ('.swiper-container', {
+                        loop: true, // 循环模式选项
+                        
+                        // 如果需要分页器
+                        pagination: {
+                            el: '.swiper-pagination',
+                            clickable:true
+                            },
+                        
+                        // 如果需要前进后退按钮
+                        navigation: {
+                            nextEl: '.swiper-button-next',
+                            prevEl: '.swiper-button-prev',
+                            },
+                        }) 
+                    })
+                }
+            }
         }
     }
 </script>
