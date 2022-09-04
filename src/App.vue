@@ -12,7 +12,11 @@
   import Footer from './components/Footer'
   export default {
     name: "App",
-    components: { Header, Footer }
+    components: { Header, Footer },
+    mounted() {
+      //通知vuex发请求，获取数据，存储在仓库中
+      this.$store.dispatch('categoryList')
+    },
 }
 </script>
 

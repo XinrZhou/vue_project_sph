@@ -46,8 +46,8 @@ export default new VueRouter({
             meta:{show:true}
         },
         {
-            path:"/search/:keyword",
             name:"search",
+            path:"/search/:keyword?",
             component:Search,
              //路由元信息
             meta:{show:true}
