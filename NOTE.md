@@ -19,4 +19,12 @@ Search模块TypeNav商品分类菜单（过渡动画效果）
 
 合并params和query参数
 
+开发Home首页当中的ListContainer组件和Floor组件
+    1 服务器返回的数据只有商品分类菜单数据，其他组件数据服务器未提供
+    2 mock数据（模拟）：应用mockjs插件
+        1)在src文件夹中创建mock文件夹
+        2)准备json数据：mock文件夹中创建相应的json文件,需要格式化
+        3)mock需要的图片放置在public文件夹中【public文件夹在打包时，会把相应的资源原封不动打包到dist文件夹】
+        4)创建mockServe.js,实现模拟数据
+        5)mockServe.js文件在入口文件中引入
         

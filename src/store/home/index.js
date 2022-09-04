@@ -1,12 +1,17 @@
-import {reqCategoryList} from '@/api'
+import {reqCategoryList, reqGetBannerList} from '@/api'
 //home模块小仓库
 const state = {
     //根据接口返回值初始化：服务器返回对象/数组
-    categoryList:[]
+    categoryList:[],
+    //轮播图数据
+    bannerList:[]
 }
 const mutations = {
     CATEGORYLIST(state,categoryList){
         state.categoryList = categoryList
+    },
+    GETBANNERLIST(state,bannerList){
+        state.bannerList = bannerList
     }
 }
 const actions = {
@@ -15,6 +20,13 @@ const actions = {
         let result = await reqCategoryList()
         if(result.code == 200){
             commit("CATEGORYLIST",result.data)
+        }
+    },
+    //获取轮播图数据
+    async getBannerList({commit}){
+        let result = await reqGetBannerList()
+        if(result.code == 200){
+            commit('GETBANNERLIST',result.data)
         }
     }
 }

@@ -110,8 +110,18 @@
 </template>
 
 <script>
+    import { mapState } from 'vuex';
     export default {
         name:'ListRecommend',
+        mounted() {
+            //派发action,通过Vuex发送ajax请求，将数据存储在仓库中
+            this.$store.dispatch('getBannerList')
+        },
+        computed:{
+            ...mapState({
+                bannerList:state => state.home.bannerList
+            })
+        }
     }
 </script>
 
