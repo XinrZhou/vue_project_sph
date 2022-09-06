@@ -3,19 +3,7 @@
         <div class="sortList clearfix">
             <div class="center">
                 <!--banner轮播-->
-                <div class="swiper-container" id="mySwiper">
-                    <div class="swiper-wrapper">
-                        <div class="swiper-slide" v-for="(carousel,index) in bannerList" :key="carousel.id">
-                            <img :src="carousel.imgUrl" />
-                        </div>
-                    </div>
-                    <!-- 如果需要分页器 -->
-                    <div class="swiper-pagination"></div>
-
-                    <!-- 如果需要导航按钮 -->
-                    <div class="swiper-button-prev"></div>
-                    <div class="swiper-button-next"></div>
-                </div>
+                <Carousel :list="bannerList"/>
             </div>
             <div class="right">
                 <div class="news">
@@ -102,47 +90,20 @@
 
 <script>
     import { mapState } from 'vuex';
-    //引包
-    import Swiper from 'swiper';
-
+import Carousel from '@/components/Carousel/index.vue';
     export default {
-        name:'ListRecommend',
-        mounted() {
-            //派发action,通过Vuex发送ajax请求，将数据存储在仓库中
-            this.$store.dispatch('getBannerList')
-        },
-        computed:{
-            ...mapState({
-                bannerList:state => state.home.bannerList
-            })
-        },
-        watch:{
-            //监听bannerList数据变化：由空数组变成四个元素
-            bannerList:{
-                //不能保证执行handler之前数据遍历完成,只能保证已经有数据了
-                handler(newValue,oldValue){
-                    //nextTick:在下次DOM更新 循环结束之后 执行延迟回调。在 修改数据之后 立即使用该方法，获取更新后的DOM
-                    this.$nextTick(()=>{
-                        var mySwiper = new Swiper ('.swiper-container', {
-                        loop: true, // 循环模式选项
-                        
-                        // 如果需要分页器
-                        pagination: {
-                            el: '.swiper-pagination',
-                            clickable:true
-                            },
-                        
-                        // 如果需要前进后退按钮
-                        navigation: {
-                            nextEl: '.swiper-button-next',
-                            prevEl: '.swiper-button-prev',
-                            },
-                        }) 
-                    })
-                }
-            }
-        }
-    }
+    name: "ListRecommend",
+    mounted() {
+        //派发action,通过Vuex发送ajax请求，将数据存储在仓库中
+        this.$store.dispatch("getBannerList");
+    },
+    computed: {
+        ...mapState({
+            bannerList: state => state.home.bannerList
+        })
+    },
+    components: { Carousel }
+}
 </script>
 
 <style scoped lang="less">

@@ -6,14 +6,8 @@
         <TodayRecommend/>
         <Rank/>
         <Like/>
-        <Floor/>
-        <Floor/>
+        <Floor v-for="(floor,index) in floorList" :key="floor.id" :list="floor" />
         <Brand/>
-        <!-- <button>点我+1</button>
-        <hr>
-        <span>仓库的数据：</span>
-        <hr>
-        <button>点我-1</button> -->
     </div>
 </template>
 
@@ -39,6 +33,15 @@
         },
         computed:{
             ...mapState(['count'])
+        },
+        mounted() {
+            //派发action，获取floor组件数据
+            this.$store.dispatch('getFloorList')
+        },
+        computed:{
+            ...mapState({
+                floorList:(state)=>state.home.floorList
+            })
         }
     }
 </script>
