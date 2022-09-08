@@ -18,11 +18,16 @@ import store from "@/store"
 import '@/mock/mockServe'
 //引入swiper样式
 import 'swiper/css/swiper.css'
+import {reqGetSearchInfo} from '@/api'
 
 Vue.config.productionTip = false
 
 new Vue({
   render: h => h(App),
+  //全局事件总线
+  beforeCreate() {
+    Vue.prototype.$bus = this
+  },
   //注册路由信息
   router,
   //注册仓库:组件实例的身上多了$store属性
