@@ -30,24 +30,13 @@
         <div class="details clearfix">
           <div class="sui-navbar">
             <div class="navbar-inner filter">
+              <!-- 排序的结构 -->
               <ul class="sui-nav">
-                <li class="active">
-                  <a href="#">综合</a>
+                <li :class="{active: isOne}" @click="changeOrder('1')">
+                  <a >综合<span v-show="isOne" class="iconfont" :class="{'icon-up':isAsc,'icon-down':isDesc}"></span></a>
                 </li>
-                <li>
-                  <a href="#">销量</a>
-                </li>
-                <li>
-                  <a href="#">新品</a>
-                </li>
-                <li>
-                  <a href="#">评价</a>
-                </li>
-                <li>
-                  <a href="#">价格⬆</a>
-                </li>
-                <li>
-                  <a href="#">价格⬇</a>
+                <li :class="{active: isTwo}" @click="changeOrder('2')">
+                  <a >价格<span v-show="isTwo" class="iconfont" :class="{'icon-up':isAsc,'icon-down':isDesc}"></span></a>
                 </li>
               </ul>
             </div>
@@ -82,35 +71,13 @@
               </li>
             </ul>
           </div>
-          <div class="fr page">
-            <div class="sui-pagination clearfix">
-              <ul>
-                <li class="prev disabled">
-                  <a href="#">«上一页</a>
-                </li>
-                <li class="active">
-                  <a href="#">1</a>
-                </li>
-                <li>
-                  <a href="#">2</a>
-                </li>
-                <li>
-                  <a href="#">3</a>
-                </li>
-                <li>
-                  <a href="#">4</a>
-                </li>
-                <li>
-                  <a href="#">5</a>
-                </li>
-                <li class="dotted"><span>...</span></li>
-                <li class="next">
-                  <a href="#">下一页»</a>
-                </li>
-              </ul>
-              <div><span>共10页&nbsp;</span></div>
-            </div>
-          </div>
+          <!-- 分页器 -->
+          <Pagination 
+            :pageNo="searchParams.pageNo" 
+            :pageSize="searchParams.pageSize" 
+            :total="total" :continues="5" 
+            @getPageNo="getPageNo"
+          />
         </div>
       </div>
     </div>
@@ -119,12 +86,14 @@
 
 <script>
   import SearchSelector from './SearchSelector/SearchSelector'
-  import { mapGetters } from 'vuex'
+  import { mapGetters,mapState } from 'vuex'
+  import Pagination from '@/components/Pagination/index.vue'
   export default {
     name: 'Search',
     components: {
-      SearchSelector
-    },
+    SearchSelector,
+    Pagination
+},
     data(){
       return{
         //带给服务器的参数
@@ -134,7 +103,8 @@
           category3Id: "",
           categoryName: "",
           keyword: "",
-          order: "",
+          // 排序：初始状态为综合&降序
+          order: "1:desc",
           pageNo: 1,
           pageSize: 10,
           props: [],
@@ -150,7 +120,23 @@
       this.getData()
     },
     computed:{
-      ...mapGetters(['goodsList','attrsList','trademarkList'])
+      ...mapGetters(['goodsList','attrsList','trademarkList']),
+      //获取search模块展示产品的总数居条数
+      ...mapState({
+        total:state=>state.search.searchList.total
+      }),
+      isOne(){
+        return this.searchParams.order.indexOf('1')!=-1
+      },
+      isTwo(){
+        return this.searchParams.order.indexOf('2')!=-1
+      },
+      isAsc(){
+        return this.searchParams.order.indexOf('asc')!=-1
+      },
+      isDesc(){
+        return this.searchParams.order.indexOf('desc')!=-1
+      }
     },
     methods: {
       //将请求封装为函数，向服务器发请求获取search模块数据
@@ -211,6 +197,30 @@
         //['属性ID:属性值:属性名']
         let props = `${attr.attrId}:${attrValue}:${attr.attrName}`
         if(this.searchParams.props.indexOf(props)==-1) this.searchParams.props.push(props)
+        this.getData()
+      },
+      //排序的操作
+      changeOrder(flag){
+        //flag形参：代表用户点击事件 1：综合 2：价格
+        let originOrder = this.searchParams.order
+        let originFlag = originOrder.split(':')[0]
+        let originSort =originOrder.split(':')[1]
+        //准备一个新的order属性值
+        let newOrder = ''
+        if(flag == originFlag){
+          newOrder = `${originFlag}:${originSort=='desc'?'asc':'desc'}`
+        }else{
+          //点击的是价格
+          newOrder = `${flag}:${'desc'}`
+        }
+        this.searchParams.order = newOrder
+        this.getData()
+      },
+      //自定义事件，获取当前为第几页
+      getPageNo(pageNo){
+        //整理参数
+        this.searchParams.pageNo = pageNo
+        //再次发请求
         this.getData()
       }
     },

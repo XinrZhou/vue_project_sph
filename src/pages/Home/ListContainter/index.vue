@@ -90,7 +90,7 @@
 
 <script>
     import { mapState } from 'vuex';
-import Carousel from '@/components/Carousel/index.vue';
+    import Carousel from '@/components/Carousel/index.vue';
     export default {
     name: "ListRecommend",
     mounted() {

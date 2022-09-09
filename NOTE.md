@@ -74,8 +74,25 @@
 ## 数组去重
 1. 判断(e.g.)
 ```
-if(this.searchParams.props.indexOf(props)==-1)
+if(this.searchParams.props.indexOf(props)==-1)<br>
+this.searchParams.props.push(props)
 ```
+
+## 排序操作
+1. 类名：通过order属性当中是否包含1（综合）|2（价格）
+2. 箭头: 谁有类名，谁有箭头
+3. 箭头制作：阿里图标库
+
+## 分页功能实现
+1. 若平台展示数据很多，不使用分页会产生卡顿
+2. 分页器需要哪些数据
+* pageNo：代表当前是第几页
+* pageSize：每一个展示多少条数据
+* total：分页器总共有多少条数据
+* continues：分页器连续页码个数(5|7)
+3. 对分页器而言，算出连续页面起始位置数字很重要
+
+
 
 
 
