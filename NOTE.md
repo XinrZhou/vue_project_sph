@@ -74,8 +74,9 @@
 ## 数组去重
 1. 判断(e.g.)
 ```
-if(this.searchParams.props.indexOf(props)==-1)<br>
-this.searchParams.props.push(props)
+if(this.searchParams.props.indexOf(props)==-1){
+  this.searchParams.props.push(props
+})
 ```
 
 ## 排序操作
@@ -92,6 +93,27 @@ this.searchParams.props.push(props)
 * continues：分页器连续页码个数(5|7)
 3. 对分页器而言，算出连续页面起始位置数字很重要
 
+## 某一个产品的详情页
+1. 静态组件注册为路由组件
+* 当点击商品图片时，跳转到详情页，在路由跳转时带上产品的ID
+* 滚动行为：参考vue官方文档
+```
+https://router.vuejs.org/zh/guide/advanced/scroll-behavior.html
+```
+2. API:请求接口
+3. Vuex:获取产品详情信息
+
+## 放大镜
+1. mask: CSS 属性 mask 允许使用者通过遮罩或者裁切特定区域的图片的方式来隐藏一个元素的部分或者全部可见区域
+2. 几个API
+* clinetX: 鼠标指针位置相对于当前窗口的 x 坐标
+* clientY: 鼠标指针位置相对于当前窗口的 y 坐标
+* offsetX: 鼠标指针位置相对于触发事件的对象的 x 坐标
+* offsetY: 鼠标指针位置相对于触发事件的对象的 y 坐标
+* screenX: 鼠标指针位置相对于用户屏幕的 x 坐标
+* screenY: 鼠标指针位置相对于用户屏幕的 y 坐标
+* HTMLElement.offsetWidth: 返回一个元素的布局宽度
+* HTMLElement.offsetHeight: 返回一个元素的布局高度
 
 
 
