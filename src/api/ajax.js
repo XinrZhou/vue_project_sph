@@ -4,6 +4,8 @@ import axios from "axios"
 import nprogress from "nprogress"
 //引入进度条样式
 import "nprogress/nprogress.css"
+//当前模块中引入store
+import store from '@/store'
 
 //利用axios对象的方法create，去创建一个axios实例
 const requests = axios.create({
@@ -12,9 +14,14 @@ const requests = axios.create({
     //代表请求超时的时间5s
     timeout:5000,
 })
+
 //请求拦截器：再发请求之前，请求拦截器可以检测到
 requests.interceptors.request.use((config)=>{
     //config:配置对象，属性中包括headers请求头
+    if(store.state.detail.uuid_token){
+        config.headers.userTempId = store.state.detail.uuid_token
+    }
+
     //进度条开始动
     nprogress.start()
     return config

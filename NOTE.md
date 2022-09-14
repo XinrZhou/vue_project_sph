@@ -115,6 +115,30 @@ https://router.vuejs.org/zh/guide/advanced/scroll-behavior.html
 * HTMLElement.offsetWidth: 返回一个元素的布局宽度
 * HTMLElement.offsetHeight: 返回一个元素的布局高度
 
+## 购买产品个数操作
+1. 用户在文本框输入商品个数：可能出现非数字字符、小数
+* 解决：字符串中非数字字符乘以1等于NaN,如12a*1等于NaN
+2. 加入购物车前发送请求，告知服务器商品信息以及商品个数
+3. 
+```
+this.$store.dispatch('addOrUpdateShopCart',{skuId:this.$route.params.skuid,skuNum:this.skuNum})
+```
+这段代码的实质是在调用仓库中的addOrUpdateShopCart,该方法加上async，结果一定返回一个Promise对象
+
+## 浏览器存储功能:HTML5新增
+1. localStorage：持久化，存储上限：5M
+2. sessionStorage：会话结束，数据消失
+3. 本地存储|会话存储，一般存储字符串
+
+## 购物车
+1. 封装游客身份模块UUID:生成一个随机字符串
+2. 请求头中也可以携带参数:在请求拦截器中
+```
+config.headers.userTempId = store.state.detail.uuid_token
+```
+
+
+
 
 
 

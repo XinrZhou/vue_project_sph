@@ -80,12 +80,12 @@
             </div>
             <div class="cartWrap">
               <div class="controls">
-                <input autocomplete="off" class="itxt">
-                <a href="javascript:" class="plus">+</a>
-                <a href="javascript:" class="mins">-</a>
+                <input autocomplete="off" class="itxt" v-model="skuNum" @change="changeSkuNum">
+                <a href="javascript:" class="plus" @click="skuNum++">+</a>
+                <a href="javascript:" class="mins" @click="skuNum>1?skuNum--:skuNum=1">-</a>
               </div>
               <div class="add">
-                <a href="javascript:">加入购物车</a>
+                <a @click="addShopcar">加入购物车</a>
               </div>
             </div>
           </div>
@@ -341,6 +341,11 @@
   import { mapGetters } from 'vuex'
   export default {
     name: 'Detail',
+    data(){
+      return {
+        skuNum:1
+      }
+    },
     components: {
       ImageList,
       Zoom
@@ -352,7 +357,39 @@
           item.isChecked = '0'
         }),
         saleAttrValue.isChecked = '1'
-      }
+      },
+      //表单元素修改产品个数
+      changeSkuNum(event){
+        let value = event.target.value * 1
+        //判断用户输入是否合法,未出现NaN且值>=1
+        if(isNaN(value) || value<1){
+          this.skuNum = 1
+        }else{
+          //正常：大于一的整数
+          this.skuNum = parseInt(value)
+        }
+      },
+      //加入购物车回调函数
+      async addShopcar(){
+        try{
+          await this.$store.dispatch('addOrUpdateShopCart',{
+            skuId:this.$route.params.skuid,
+            skuNum:this.skuNum
+          })
+          /* 简单数据，通过query形式传递。复杂数据，通过会话存储*/
+          sessionStorage.setItem('SKUINFO',JSON.stringify(this.skuInfo))
+          this.$router.push({
+            name:'addcartsuccess',
+            query:{
+              skuNum:this.skuNum
+            }
+          })
+        } catch (error) {
+          alert(error.message)
+        }
+        
+        
+      },
     },
     mounted() {
       //派发action，获取产品详情的信息
