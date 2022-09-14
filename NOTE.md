@@ -136,6 +136,14 @@ this.$store.dispatch('addOrUpdateShopCart',{skuId:this.$route.params.skuid,skuNu
 ```
 config.headers.userTempId = store.state.detail.uuid_token
 ```
+3. 数组的every方法
+* 用于检测数组所有元素是否都符合指定条件，若有一个不满足。返回false
+* every() 对空数组检测 返回 true
+```
+this.cartInfoList.every(item=>item.isChecked==1)
+```
+4. 修改产品个数：节流
+
 
 
 
