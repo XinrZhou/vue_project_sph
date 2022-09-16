@@ -33,6 +33,25 @@ const actions = {
         } else {
             return Promise.reject(new Error('fail'))
         }
+    },
+    //删除全部选中的商品
+    deleteAllCheckedCart({dispatch,getters}){
+        //获取购物车中全部的产品(数组)
+        let PromiseAll = []
+        getters.cartList.cartInfoList.forEach(item=>{
+            let promise = item.isChecked==1?dispatch('deleteCartListBySkuId',item.skuId):''
+            PromiseAll.push(promise)
+        })
+        return Promise.all(PromiseAll)
+    },
+    //修改全部产品状态
+    updateAllCartChecked({dispatch,state},isChecked){
+        let promiseAll = []
+        state.cartList[0].cartInfoList.forEach(item=>{
+            let promise = dispatch('updateCheckedById',{skuId:item.skuId,isChecked})
+            promiseAll.push(promise)
+        })
+        return Promise.all(promiseAll)
     }
 }
 const getters = {

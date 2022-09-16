@@ -1,5 +1,20 @@
 # 项目笔记
 
+## 路由传参
+1. 字符串形式
+2. 模板字符串
+```
+this.$router.push(`/search/${this.keyword}?k=${this.keyword.toUpperCase()}`)
+```
+3. 对象
+```
+if(this.$route.query){
+  let location = {name:"search", params:{keyword: this.keyword || undefined}}
+  location.query = this.$route.query
+  this.$router.push(location)
+}
+```
+
 ## 获取服务器数据：解决跨域问题
 1. jsonp、cross、代理服务器
 
@@ -142,8 +157,29 @@ config.headers.userTempId = store.state.detail.uuid_token
 ```
 this.cartInfoList.every(item=>item.isChecked==1)
 ```
-4. 修改产品个数：节流
+4. 会话存储：用于存储产品的某些信息
+5. 修改产品个数时防止用户点击过快：节流
+6. actions中的参数context，相当于小仓库
+7. promis.all([p1,p2,p3])：p1,p2,p3每个都是一个Promise对象，有一个失败，则全部失败
 
+## 登陆
+1. assets文件夹：放置所有组件共用的静态资源
+2. @代表src文件夹，js中可直接使用，css中使用~@形式
+3. 登陆成功，后台为区分用户身份，服务器下发token【令牌：唯一标识符】
+* 服务器下发token，前台持久化存储token
+* 注意：vuex存储数据是非持久化的，刷新后数据消失
+* token通过请求头携带给服务器，获得用户信息
+```
+config.headers.token = store.state.user.token
+```
+* 持久化存储token
+```
+localStorage.setItem('TOKEN',result.data.token)
+```
+* 清除token
+```
+localStorage.removeItem('TOKEN')
+```
 
 
 

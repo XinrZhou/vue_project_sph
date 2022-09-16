@@ -5,11 +5,15 @@
             <div class="container">
                 <div class="loginList">
                     <p>尚品汇欢迎您！</p>
-                    <p>
+                    <p v-if="!userName">
                         <span>请</span>
                         <!-- 声明式导航，必须有to属性 -->
                         <router-link to="/login">登录</router-link>
                         <router-link to="/register" class="register">免费注册</router-link>
+                    </p>
+                    <p v-if="userName">
+                        <a>{{userName}}</a>
+                        <a class="register" @click="logout">退出登录</a>
                     </p>
                 </div>
                 <div class="typeList">
@@ -63,16 +67,19 @@
         methods: {
             //搜索按钮的回调函数，向search路由跳转
             goSearch(){
-                //路由传递参数：
-                //第一种：字符串形式
-                // this.$router.push('/search/' + this.keyword + '?k=' + this.keyword.toUpperCase())
-                //第二种：模板字符串
-                // this.$router.push(`/search/${this.keyword}?k=${this.keyword.toUpperCase()}`)
-                // 第三种：对象
                 if(this.$route.query){
                     let location = {name:"search", params:{keyword: this.keyword || undefined}}
                     location.query = this.$route.query
                     this.$router.push(location)
+                }
+            },
+            //退出
+            async logout(){
+                try{
+                    await this.$store.dispatch('userLogout')
+                    this.$router.push('/home')
+                }catch(error){
+                    alert(error.message)
                 }
             }
         },
@@ -82,6 +89,11 @@
                 this.keyword = ''
             })
         },
+        computed:{
+            userName(){
+                return this.$store.state.user.userInfo.name
+            }
+        }
     }
 </script>
 
