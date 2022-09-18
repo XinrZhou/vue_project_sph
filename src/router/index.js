@@ -5,6 +5,9 @@ import routes from './routes'
 //使用插件
 Vue.use(VueRouter)
 
+//引入store
+import store from '@/store'
+
 //先把vueRouter原型对象的push，保存一份
 let originPush = VueRouter.prototype.push
 let originReplace = VueRouter.prototype.replace
@@ -32,7 +35,7 @@ VueRouter.prototype.replace = function(location,resolve,reject){
 }
 
 //配置路由
-export default new VueRouter({
+let router = new VueRouter({
     routes,
     //滚动行为
     scrollBehavior(to, from, savedPosition) {
@@ -40,3 +43,32 @@ export default new VueRouter({
         return { y: 0 }
       },
 })
+
+//全局前置守卫
+router.beforeEach(async (to,from,next)=>{
+    let token = store.state.user.token
+    let name = store.state.user.userInfo.name
+    if(token){
+        if(to.path == '/login'){
+            next('/')
+        }else{
+            if(name){
+                next()
+            }else{
+                //获取用户信息在首页展示
+                try{
+                    await store.dispatch('getUserInfo')
+                    next()
+                }catch(error){
+                   //token失效
+                   await store.dispatch('userLogout')
+                   next('/login')
+                }
+            }
+        }
+    }else{
+        next()
+    }
+})
+
+export default router

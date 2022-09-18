@@ -181,6 +181,27 @@ localStorage.setItem('TOKEN',result.data.token)
 localStorage.removeItem('TOKEN')
 ```
 
+## 导航守卫
+1. 导航：表示路由正在发生改变，进行路由跳转
+2. 全局守卫：项目中，只要发生变化，路由就能监听到
+* 全局前置守卫
+```
+router.beforeEach((to,from,next)=>{
+})
+```
+* next：放行函数 next()放行 next(path)：放行到指定路由 next(false)
+* 有用户信息，但无法获取数据【token失效】，需要重新登陆
+3. 路由独享守卫
+4. 组件内守卫
+
+## 提交订单
+1. 不要在生命周期函数上加async
+2. 组件库 
+* React(vue):antd[PC]  antd-mobile[移动端]
+* Vue:ElementUI[PC]  vant[移动端]
+
+
+
 
 
 
